@@ -31,4 +31,6 @@ Route::group(['prefix' => 'v1'], function() {
     Route::get('category', 'CategoriesController@index');
 
     Route::get('events', 'EventController@index');
+    Route::get('event/{id}', 'EventController@show');
+    Route::post('event', 'EventController@store');
 });
