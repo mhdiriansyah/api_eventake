@@ -10,6 +10,13 @@ use Ramsey\Uuid\Uuid;
 
 class EventController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('jwt.auth', 
+        ['except' => ['show']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,8 +24,9 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::all();
+        $events = Event::with('categories')->orderBy('created_at', 'desc')->get();
         return EventResource::collection($events);
+
     }
 
     /**
@@ -39,9 +47,9 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        $event = $request->isMethod('put') ? Event::findOrFail($request->id) : new Event;
-
-        $event->id = Uuid::uuid4()->getHex();
+        $event = $request->isMethod('put') ? Event::findOrFail($request->input('id')) : new Event;
+        
+        $event->id = $request->isMethod('put') ? $request->input('id') : Uuid::uuid4()->getHex();
         $event->categories_id = $request->input('categories_id');
         $event->event_name = $request->input('event_name');
         $event->event_desc = $request->input('event_desc');
@@ -56,10 +64,10 @@ class EventController extends Controller
         $event->event_organizer = $request->input('event_organizer');
         $event->event_registrant_quota = $request->input('event_registrant_quota');
         $event->event_active = $request->input('event_active');
-        $event->created_at = date('Y-m-d H:i:s');
+        ($request->isMethod('put')) ? $event->updated_at = date('Y-m-d H:i:s') : $event->created_at = date('Y-m-d H:i:s');
 
-        if ($event->save()){
-            return EventResource::collection(Event::all());
+        if($event->save()) {
+            return EventResource::collection(Event::all()->sortByDesc('created_at'));
         }
     }
 
@@ -81,7 +89,7 @@ class EventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, Request $request)
     {
         //
     }
@@ -106,6 +114,9 @@ class EventController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $event = Event::findOrFail($id);
+        if($event->delete()){
+            return EventResource::collection(Event::all()->sortByDesc('created_at'));
+        }
     }
 }

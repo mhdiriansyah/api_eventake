@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Users;
+use Ramsey\Uuid\Uuid;
+use JWTAuth;
+use JWTAuthException;
 
 class AuthController extends Controller
 {
@@ -14,8 +18,57 @@ class AuthController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
+    {   
+        $this->validate($request, [
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'date_of_birth' => 'required',
+            'email' => 'required|email',
+            'password' => 'required',
+            'address' => 'required',
+            'gender' => 'required',
+            'phone' => 'required',
+        ]);
+
+        $firstName = $request->input('first_name');
+        $lastName = $request->input('last_name');
+        $dateOfBirth = $request->input('date_of_birth');
+        $email = $request->input('email');
+        $password = $request->input('password');
+        $address = $request->input('address');
+        $gender = $request->input('gender');
+        $phone = $request->input('phone');
+        
+        $user = new Users([
+            'id' => Uuid::uuid4()->getHex(),
+            'first_name' => $firstName,
+            'last_name' => $lastName,
+            'date_of_birth' => $dateOfBirth,
+            'email' => $email,
+            'password' => password_hash($password, PASSWORD_DEFAULT),
+            'address' => $address,
+            'gender' => $gender,
+            'phone' => $phone,
+            'created_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        if($user->save()) {
+            $user->sigin = [
+                'href' => 'api/vi/user/sigin',
+                'method' => 'POST',
+                'params' => 'email, password'
+            ];
+            $response = [
+                'msg' => 'User created',
+                'user' => $user
+            ];
+            return response()->json($response, 201);
+        }
+
+        $response = [
+            'msg' => 'An error occured'
+        ];
+        return response()->json($response, 404);
     }
 
     /**
@@ -25,7 +78,44 @@ class AuthController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function sigin(Request $request)
-    {
-        //
+    {   
+        $this->validate($request, [
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $email = $request->input('email');
+        $password = $request->input('password'); 
+
+        if($user = Users::where('email', $email)->first()) {
+            $credentials = [
+                'email' => $email,
+                'password' => $password 
+            ];
+            $token = null;
+            try {
+                if (!$token = JWTAuth::attempt($credentials)) {
+                    return response()->json([
+                        'msg' => 'Email or Password are incorrect',
+                    ], 404);
+                }
+            }catch(JWTAuthException $e) {
+                return response()->json([
+                    'msg' => 'failed to create token',
+                ], 404);
+            }
+
+            $response = [
+                'msg' => 'User success signin',
+                'user' => $user,
+                'token' => $token,
+            ];
+            return response()->json($response, 201);
+        }
+
+        $response = [
+            'msg' => 'An error occured'
+        ];
+        return response()->json($response, 404);
     }
 }

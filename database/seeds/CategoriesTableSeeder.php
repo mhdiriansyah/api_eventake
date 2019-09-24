@@ -14,23 +14,23 @@ class CategoriesTableSeeder extends Seeder
         DB::table('categories')->insert([
             [
                 'categories_name' => 'Festival Electronic Dance Music',
-                'categories_desc' => 'Lorem ipsum dolor sit amet',
+                'created_at' => date('Y-m-d H:i:s'),
             ],
             [
                 'categories_name' => 'Conference',
-                'categories_desc' => 'Lorem ipsum dolor sit amet',
+                'created_at' => date('Y-m-d H:i:s'),
             ],
             [
                 'categories_name' => 'Exhibition',
-                'categories_desc' => 'Lorem ipsum dolor sit amet',
+                'created_at' => date('Y-m-d H:i:s'),
             ],
             [
                 'categories_name' => 'Sports',
-                'categories_desc' => 'Lorem ipsum dolor sit amet',
+                'created_at' => date('Y-m-d H:i:s'),
             ],
             [
                 'categories_name' => 'Workshop',
-                'categories_desc' => 'Lorem ipsum dolor sit amet',
+                'created_at' => date('Y-m-d H:i:s'),
             ],
         ]);
     }

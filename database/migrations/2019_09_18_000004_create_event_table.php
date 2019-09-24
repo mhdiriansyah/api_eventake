@@ -18,6 +18,7 @@ class CreateEventTable extends Migration
             $table->integer('categories_id')->unsigned();
             $table->string('event_name');
             $table->string('event_desc');
+            $table->string('event_img');
             $table->date('event_date_start');
             $table->date('event_date_end');
             $table->time('event_time_start');

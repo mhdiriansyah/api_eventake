@@ -16,7 +16,10 @@ class EventResource extends JsonResource
     {
         return [
             'id' => (string) $this->id,
-            'categoriesId' => $this->categories_id,
+            'categories' => [
+                'id' => $this->categories['id'],
+                'name' => $this->categories['categories_name'],
+            ],
             'eventName' => $this->event_name,
             'eventDesc' => $this->event_desc,
             'eventDateStart' => $this->event_date_start,
@@ -30,13 +33,6 @@ class EventResource extends JsonResource
             'eventOrganizer' => $this->event_organizer,
             'eventRegistrantQuota' => $this->event_registrant_quota,
             'eventActive' => $this->event_active,
-        ];
-    }
-
-    public function with($request) {
-        return [
-            'version' => '1.0.0',
-            'author_url' => url('http://pacegege.com')
         ];
     }
 }

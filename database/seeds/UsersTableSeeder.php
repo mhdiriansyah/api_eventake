@@ -23,6 +23,7 @@ class UsersTableSeeder extends Seeder
                 'address' => 'Jln. Enggros Kampkey Abepura',
                 'gender' => 'Male',
                 'phone' => '82248080870',
+                'created_at' => date('Y-m-d H:i:s'),
             ],
             [
                 'id' => Uuid::uuid4()->getHex(),
@@ -34,6 +35,7 @@ class UsersTableSeeder extends Seeder
                 'address' => 'Jln. Raya Sentani YPKP',
                 'gender' => 'Female',
                 'phone' => '81354141927',
+                'created_at' => date('Y-m-d H:i:s'),
             ],
         ]);
     }

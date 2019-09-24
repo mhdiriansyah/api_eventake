@@ -3,12 +3,16 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Categories extends Model
 {
+    use SoftDeletes;
     protected $table = 'categories';
+    protected $primaryKey = 'id';
     protected $fillable = ['categories_name', 'categories_desc'];
-    public $timestamps = true;
+    protected $guarded = ['created_at', 'updated_at'];
+    public $dates = ['deleted_at'];
 
     public function event()
     {
