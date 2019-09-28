@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\Users;
 use Ramsey\Uuid\Uuid;
 use JWTAuth;
@@ -19,7 +20,7 @@ class AuthController extends Controller
      */
     public function store(Request $request)
     {   
-        $this->validate($request, [
+        $validation = Validator::make($request->all(), [
             'first_name' => 'required',
             'last_name' => 'required',
             'date_of_birth' => 'required',
@@ -29,6 +30,15 @@ class AuthController extends Controller
             'gender' => 'required',
             'phone' => 'required',
         ]);
+
+        if($validation->fails()){
+            $response = [
+                'errorMessage' => $validation->errors(),
+                'result' => [],
+                'status' => 'BAD_REQUEST'
+            ];
+            return response()->json($response, 400);
+        }
 
         $firstName = $request->input('first_name');
         $lastName = $request->input('last_name');
@@ -49,7 +59,6 @@ class AuthController extends Controller
             'address' => $address,
             'gender' => $gender,
             'phone' => $phone,
-            'created_at' => date('Y-m-d H:i:s'),
         ]);
 
         if($user->save()) {

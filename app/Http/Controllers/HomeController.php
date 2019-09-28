@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 
 class HomeController extends Controller
 {
@@ -33,7 +34,7 @@ class HomeController extends Controller
                 'title_event' => 'Ruby Conf #2',
                 'desc_event' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
                 'img_event' => 'https://img.icons8.com/officel/480/000000/full-image.png',
-                'date_event' => '2019-11-01',
+                'date_event' => Cookie::get('rll_acct')
             ],
         ];
         return view('index', compact('data'));

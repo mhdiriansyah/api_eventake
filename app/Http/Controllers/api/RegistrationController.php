@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\api;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Users;
-use App\Http\Resources\Users as UsersResources;
+use App\Registration;
+use App\Http\Resources\RegistrationResource;
 
-class UsersController extends Controller
+class RegistrationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +16,13 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = Users::all();
-        return $users;
+        $registrations = Registration::all()->sortByDesc('registration_datetime_in');
+        $response = [
+            'status' => '200',
+            'message' => 'Ok',
+            'result' => RegistrationResource::collection($registrations)
+        ];
+        return response()->json($response, 200);
     }
 
     /**
@@ -48,7 +54,21 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        //
+        $registration = Registration::find($id);
+        if($registration) {
+            $response = [
+                'status' => '200',
+                'message' => 'Ok',
+                'data' => [new RegistrationResource($registration)]
+            ];
+            return response()->json($response, 200);
+        }
+        $response = [
+            'status' => '404',
+            'message' => 'Not Found',
+            'data' => []
+        ];
+        return response()->json($response, 404);
     }
 
     /**

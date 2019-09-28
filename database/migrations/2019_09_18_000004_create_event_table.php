@@ -18,7 +18,7 @@ class CreateEventTable extends Migration
             $table->integer('categories_id')->unsigned();
             $table->string('event_name');
             $table->string('event_desc');
-            $table->string('event_img');
+            $table->string('event_img')->nullable();
             $table->date('event_date_start');
             $table->date('event_date_end');
             $table->time('event_time_start');
@@ -33,9 +33,7 @@ class CreateEventTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('categories_id')
-                ->references('id')->on('categories')
-                ->onDelete('cascade');
+            $table->foreign('categories_id')->references('id')->on('categories')->onDelete('cascade');
         });
     }
 

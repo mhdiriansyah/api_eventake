@@ -14,6 +14,7 @@ class Event extends Model
     protected $casts = ['id' => 'string'];
     protected $guarded = ['created_at', 'updated_at'];
     public $dates = ['deleted_at'];
+    public $timestamps = true;
     
     public function categories()
     {

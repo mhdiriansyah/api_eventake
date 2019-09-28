@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Users extends Model
 {
+    use softDeletes;
     protected $table = 'users';
     protected $primaryKey = 'id';
     protected $casts = ['id' => 'string'];
