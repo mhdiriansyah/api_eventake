@@ -20,7 +20,7 @@ class RegistrationController extends Controller
         $response = [
             'status' => '200',
             'message' => 'Ok',
-            'result' => RegistrationResource::collection($registrations)
+            'data' => RegistrationResource::collection($registrations)
         ];
         return response()->json($response, 200);
     }

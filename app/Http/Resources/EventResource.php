@@ -22,7 +22,7 @@ class EventResource extends JsonResource
             ],
             'eventName' => $this->event_name,
             'eventDesc' => $this->event_desc,
-            'eventImg' => $this->event_img,
+            'eventImg' => ($this->event_img != null) ? $this->event_img : 'https://img.icons8.com/officel/480/000000/full-image.png',
             'eventDateStart' => $this->event_date_start,
             'eventDateEnd' => $this->event_date_end,
             'eventTimeStart' => $this->event_time_start,

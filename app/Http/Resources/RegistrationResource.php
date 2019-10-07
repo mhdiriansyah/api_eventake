@@ -30,7 +30,7 @@ class RegistrationResource extends JsonResource
                 'id' => $this->event['id'],
                 'name' => $this->event['event_name'],
                 'desc' => $this->event['event_desc'],
-                'img' => $this->event['event_img'],
+                'img' => ($this->event_img != null) ? $this->event_img : 'https://img.icons8.com/officel/480/000000/full-image.png',
                 'dateStart' => $this->event['event_date_start'],
                 'dateEnd' => $this->event['event_date_end'],
                 'timeStart' => $this->event['event_time_start'],

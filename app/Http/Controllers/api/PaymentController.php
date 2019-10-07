@@ -21,7 +21,7 @@ class PaymentController extends Controller
         $response = [
             'status' => '200',
             'message' => 'Ok',
-            'result' => PaymentResource::collection($payment)
+            'data' => PaymentResource::collection($payment)
         ];
         return response()->json($response, 200);
     }
